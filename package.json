@@ -1,0 +1,23 @@
+{
+  "name": "communitygardenapi",
+  "version": "1.0.0",
+  "description": "Communitygarden.app API",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codyirving/CommunityGardenAPI.git"
+  },
+  "author": "Cody Irving",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codyirving/CommunityGardenAPI/issues"
+  },
+  "homepage": "https://github.com/codyirving/CommunityGardenAPI#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
