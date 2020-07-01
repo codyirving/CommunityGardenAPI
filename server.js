@@ -4,8 +4,12 @@ let app = express();
 app.use(express.json());
 const PORT = 3000;
 
+
+// List of routers being used
 let bedRouter = require("./routes/bedrouter");
 app.use(bedRouter);
+
+
 
 function runServer(databaseUrl, port = PORT) {
 
