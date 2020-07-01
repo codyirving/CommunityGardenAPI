@@ -14,9 +14,11 @@ const { GardenBeds } = require('../models/gardenbeds_model');
 router.route('/gardenbeds/').get( function(req,res) {
     GardenBeds.find({}).then(
         //Return results as json
-        beds => { res.status(200).json(beds) }
+        beds => { 
+            res.status(200).json(beds) 
+        }
     ).catch(err => {
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: `Internal server error: ${err}` });
     });
 });
 
@@ -25,7 +27,13 @@ router.route('/gardenbeds/:id')
     next()
 })
 .get(function (req, res, next) {
-    res.status(200).json({'beds': req.params.id});
+    GardenBeds.findOne({"bedNumber": `${req.params.id}`}).then(
+        bed => {
+            res.status(200).json(bed.serialize());
+        }
+    ).catch(err => {
+        res.status(500).json({ message: "Internal server error" });
+    })
 });
 
 
