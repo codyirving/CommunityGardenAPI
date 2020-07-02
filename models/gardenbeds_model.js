@@ -38,7 +38,7 @@ const BedInformationSchema = mongoose.Schema({
 
 //Schema for all Garden Beds
 const GardenBedSchema = mongoose.Schema({
-    bedNumber: { type: String, required: true, unique: true },
+    bedNumber: { type: Number, required: true, unique: true },
     bedOwner: BedOwnerSchema,
     bedInformation: BedInformationSchema
 })
