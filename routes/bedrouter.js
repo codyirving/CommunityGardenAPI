@@ -28,7 +28,7 @@ router
   .post(function (req, res) {
     // Will insert bed if bedNumber does not exist, and update bed
     // if bedNumber does exist
-    
+
     GardenBeds.findOneAndUpdate(
       { bedNumber: req.body.bedNumber },
       req.body,
@@ -52,13 +52,12 @@ router
     next();
   })
   .get(function (req, res, next) {
-    GardenBeds.findOne({ bedNumber: `${req.params.id}` })
-      .then((bed) => {
-        res.status(200).json(bed.serialize());
-      })
-      .catch((err) => {
-        res.status(500).json({ message: "Internal server error" });
-      });
+    const query = GardenBeds.where({bedNumber: req.params.id});
+    query.findOne(function (err, bed) {
+        if(err) res.status(500).json({message: err});
+        if(bed) res.status(200).json(bed);
+        else res.status(500).json({message: "No results"});
+    });
   });
 
 module.exports = router;
