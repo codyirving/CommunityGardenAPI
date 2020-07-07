@@ -1,12 +1,10 @@
-process.env.NODE_ENV = 'test';
-const { TEST_DATABASE_URL, PORT, DATABASE_URL } = require('../config');
+process.env.NODE_ENV = "test";
+const { TEST_DATABASE_URL, PORT } = require("../config");
 const { app, closeServer, runServer } = require("../server");
 const chai = require("chai");
 var expect = chai.expect;
 const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
-
-
 
 const seedData = [
   {
@@ -85,36 +83,47 @@ const seedData = [
 
 const { GardenBeds } = require("../models/gardenbeds_model");
 console.log("Inserting records");
-GardenBeds.insertMany(seedData,{ordered: false}, function (err) {
+GardenBeds.insertMany(seedData, { ordered: false }, function (err) {
   console.log("Insert Error: " + err);
 });
-console.log("Running tests");
 describe("Endpoint Tests", function () {
   before(function () {
-    console.log("Running Server");
-    return runServer(DATABASE_URL, PORT);
+    return runServer(TEST_DATABASE_URL, PORT);
   });
 
   beforeEach(function () {
-    console.log("Seeding data");
     return seedData;
   });
 
   after(function () {
     return closeServer();
   });
-  console.log("Inside Endpoint tests");
-  it("GET all gardenbeds", function () {
-  
-    return chai
-      .request(app)
-      .get('/gardenbeds/')
-      .then(function (res,err) {
-        console.log('GET ok');
-        if(err) console.log('rejected...' + err);
-        expect(res).to.have.status(200);
-        expect(res).to.be.json;
-        expect(res.body).to.be.a("array");
-      });
+
+  describe("GET all gardenbeds", function () {
+    it("should return status 200 and json array of results", function () {
+      return chai
+        .request(app)
+        .get("/gardenbeds/")
+        .then(function (res, err) {
+          if (err) console.log("rejected..." + err);
+          expect(res).to.have.status(200);
+          expect(res).to.be.json;
+          expect(res.body).to.be.a("array");
+        });
+    });
+  });
+
+  describe("GET single gardenbed", function () {
+    it("should return status 200 and json object result", function () {
+      return chai
+        .request(app)
+        .get("/gardenbeds/1")
+        .then(function (res, err) {
+          if (err) console.err(err);
+          expect(res).to.have.status(200);
+          expect(res).to.be.json;
+          expect(res.body).to.be.a("object");
+        });
+    });
   });
 });
