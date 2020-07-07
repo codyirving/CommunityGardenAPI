@@ -1,7 +1,10 @@
-const { app, runServer } = require("../server");
+process.env.NODE_ENV = 'test';
+const { app, closeServer, runServer } = require("../server");
 const chai = require("chai");
-const expect = chai.expect;
-const chaiHttp = require('chai-http');
+var expect = chai.expect;
+const chaiHttp = require("chai-http");
+chai.use(chaiHttp);
+
 
 const seedData = [
   {
@@ -79,26 +82,37 @@ const seedData = [
 ];
 
 const { GardenBeds } = require("../models/gardenbeds_model");
-
-GardenBeds.insertMany(seedData, function(err) {
-    console.log("Insert Error: " + err);
+console.log("Inserting records");
+GardenBeds.insertMany(seedData,{ordered: false}, function (err) {
+  console.log("Insert Error: " + err);
 });
+console.log("Running tests");
+describe("Endpoint Tests", function () {
+  before(function () {
+    console.log("Running Server");
+    return runServer();
+  });
 
+  beforeEach(function () {
+    console.log("Seeding data");
+    return seedData;
+  });
 
-describe('test endpoints', function () {
-
-    before(function () {
-        return runServer();
-    });
-
-    beforeEach(function () {
-        return seedData;
-    });
-
-
-    after(function () {
-        return closeServer();
-    });
-
-    describe('getPositions', function () {}
-}
+  after(function () {
+    return closeServer();
+  });
+  console.log("Inside Endpoint tests");
+  it("GET all gardenbeds", function () {
+  
+    return chai
+      .request(app)
+      .get('/gardenbeds/')
+      .then(function (res,err) {
+        console.log('GET ok');
+        if(err) console.log('rejected...' + err);
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.a("array");
+      });
+  });
+});
