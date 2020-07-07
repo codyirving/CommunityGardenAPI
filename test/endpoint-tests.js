@@ -1,9 +1,11 @@
 process.env.NODE_ENV = 'test';
+const { TEST_DATABASE_URL, PORT, DATABASE_URL } = require('../config');
 const { app, closeServer, runServer } = require("../server");
 const chai = require("chai");
 var expect = chai.expect;
 const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
+
 
 
 const seedData = [
@@ -90,7 +92,7 @@ console.log("Running tests");
 describe("Endpoint Tests", function () {
   before(function () {
     console.log("Running Server");
-    return runServer();
+    return runServer(DATABASE_URL, PORT);
   });
 
   beforeEach(function () {
