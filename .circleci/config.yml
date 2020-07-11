@@ -1,12 +1,13 @@
 version: 2.1
 orbs:
-  node: circleci/node@1.1.6
+  node: circleci/node@3.0.1
 jobs:
   build-and-test:
     executor:
       name: node/default
-    docker:
-      - image: circleci/mongo:latest
+    setup:
+      steps:
+        - run: $SUDO npm i mongodb -g
     steps:
       - checkout
       - node/with-cache:
