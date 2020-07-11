@@ -7,12 +7,11 @@ jobs:
       name: node/default
     steps:
       - checkout
-      - node/with-cache:
-          steps:
-            - run: $SUDO npm i mongodb -g
-            - run: npm install
-            - run: mongod
-            - run: mocha test
+      steps:
+        - run: $SUDO npm i mongodb -g
+        - run: npm install
+        - run: mongod
+        - run: mocha test
 workflows:
   build-and-test:
     jobs:
