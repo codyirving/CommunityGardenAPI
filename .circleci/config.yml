@@ -10,7 +10,6 @@ jobs:
       - node/with-cache:
           steps:
             - run: sudo npm i mongodb -g
-            - run: /usr/local/mongodb/bin/mongod
             - run: npm install
             - run: npm test
 workflows:
