@@ -9,11 +9,11 @@ jobs:
       - checkout
       - node/with-cache:
           steps:
-             - run: $SUDO npm i mongodb -g
+            - run: $SUDO npm i mongodb -g
             - run: mongod
             - run: npm install
             - run: npm test
 workflows:
-    build-and-test:
-      jobs:
-        - build-and-test
+  build-and-test:
+    jobs:
+      - build-and-test
