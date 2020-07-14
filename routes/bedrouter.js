@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
 
 //Get GardenBeds from DB
 const { GardenBeds } = require("../models/gardenbeds_model");
@@ -46,11 +45,11 @@ router
     next();
   })
   .get(function (req, res, next) {
-    const query = GardenBeds.where({bedNumber: req.params.id});
+    const query = GardenBeds.where({ bedNumber: req.params.id });
     query.findOne(function (err, bed) {
-        if(err) res.status(500).json({message: err});
-        if(bed) res.status(200).json(bed);
-        else res.status(500).json({message: "No results"});
+      if (err) res.status(500).json({ message: err });
+      if (bed) res.status(200).json(bed);
+      else res.status(500).json({ message: "No results" });
     });
   });
 
